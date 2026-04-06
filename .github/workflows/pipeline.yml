@@ -1,5 +1,5 @@
 
-name: Engine Predictive Maintenance Final Rpt Pipeline
+name: Engine Predictive Maintenance Pipeline
 
 on:
   push:
