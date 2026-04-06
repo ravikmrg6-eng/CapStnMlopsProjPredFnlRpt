@@ -9,13 +9,12 @@ jobs:
   register-dataset:
     runs-on: ubuntu-latest
     steps:
-      - uses: actions/checkout@v3
+      - uses: actions/checkout@v4
       - name: Install Dependencies
         run: pip install -r cp_predictive_maintenance_proj/requirements.txt
       - name: Upload Dataset to Hugging Face Hub
         env: 
-          -name:FORCE_JAVASCRIPT_ACTIONS_TO_NODE24: true
-          HF_TOKEN1: ${{ secrets.HF_TOKEN1 }}
+            HF_TOKEN1: ${{ secrets.HF_TOKEN1 }}
         run: python cp_predictive_maintenance_proj/model_building/data_register.py
   
   data-prep:
@@ -23,13 +22,12 @@ jobs:
     needs: register-dataset
     runs-on: ubuntu-latest
     steps:
-      - uses: actions/checkout@v3
+      - uses: actions/checkout@v4
       - name: Install Dependencies
         run: pip install -r cp_predictive_maintenance_proj/requirements.txt
       - name: Run Data Preparation
         env:
-          -name:FORCE_JAVASCRIPT_ACTIONS_TO_NODE24: true
-          HF_TOKEN1: ${{ secrets.HF_TOKEN1 }}
+           HF_TOKEN1: ${{ secrets.HF_TOKEN1 }}
         run: python cp_predictive_maintenance_proj/model_building/prep.py
   
   model-traning:
@@ -37,7 +35,7 @@ jobs:
     needs: data-prep
     runs-on: ubuntu-latest
     steps:
-      - uses: actions/checkout@v3
+      - uses: actions/checkout@v4
       - name: Install Dependencies
         run: pip install -r cp_predictive_maintenance_proj/requirements.txt
       - name: Start MLflow Server
@@ -46,8 +44,7 @@ jobs:
           sleep 5  # Wait for a moment to let the server starts
       - name: Model Building
         env:
-          -name:FORCE_JAVASCRIPT_ACTIONS_TO_NODE24: true
-          HF_TOKEN1: ${{ secrets.HF_TOKEN1 }}
+           HF_TOKEN1: ${{ secrets.HF_TOKEN1 }}
         run: python cp_predictive_maintenance_proj/model_building/train.py
   
   deploy-hosting:
@@ -55,11 +52,10 @@ jobs:
     runs-on: ubuntu-latest
     needs: [model-traning,data-prep,register-dataset]
     steps:
-      - uses: actions/checkout@v3
+      - uses: actions/checkout@v4
       - name: Install Dependencies
         run: pip install -r cp_predictive_maintenance_proj/requirements.txt
       - name: Push files to Frontend Hugging Face Space
         env:
-          -name:FORCE_JAVASCRIPT_ACTIONS_TO_NODE24: true
-          HF_TOKEN: ${{ secrets.HF_TOKEN1 }}
+           HF_TOKEN: ${{ secrets.HF_TOKEN1 }}
         run: python cp_predictive_maintenance_proj/hosting/hosting.py
