@@ -13,7 +13,8 @@ jobs:
       - name: Install Dependencies
         run: pip install -r cp_predictive_maintenance_proj/requirements.txt
       - name: Upload Dataset to Hugging Face Hub
-        env:
+        env: 
+          -name:FORCE_JAVASCRIPT_ACTIONS_TO_NODE24: true
           HF_TOKEN1: ${{ secrets.HF_TOKEN1 }}
         run: python cp_predictive_maintenance_proj/model_building/data_register.py
   
@@ -27,6 +28,7 @@ jobs:
         run: pip install -r cp_predictive_maintenance_proj/requirements.txt
       - name: Run Data Preparation
         env:
+          -name:FORCE_JAVASCRIPT_ACTIONS_TO_NODE24: true
           HF_TOKEN1: ${{ secrets.HF_TOKEN1 }}
         run: python cp_predictive_maintenance_proj/model_building/prep.py
   
@@ -44,6 +46,7 @@ jobs:
           sleep 5  # Wait for a moment to let the server starts
       - name: Model Building
         env:
+          -name:FORCE_JAVASCRIPT_ACTIONS_TO_NODE24: true
           HF_TOKEN1: ${{ secrets.HF_TOKEN1 }}
         run: python cp_predictive_maintenance_proj/model_building/train.py
   
@@ -57,5 +60,6 @@ jobs:
         run: pip install -r cp_predictive_maintenance_proj/requirements.txt
       - name: Push files to Frontend Hugging Face Space
         env:
+          -name:FORCE_JAVASCRIPT_ACTIONS_TO_NODE24: true
           HF_TOKEN: ${{ secrets.HF_TOKEN1 }}
         run: python cp_predictive_maintenance_proj/hosting/hosting.py
